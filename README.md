@@ -90,6 +90,16 @@ I hope you got the jist of it. There's a ton of stuff you can do with ray-castin
 
 **Note: Times for entity raycasting vary depending on how many entities are currently loaded.**\
 
+Units are in milliseconds
 |  Precision Level  |  Block  |  Entity  |  All (Entity and Block)  |
 |---|---|---|---|
-|  Inaccurate  |  61.22  |  71.96  | 120.24  |
+|  Inaccurate  |  61.22 ms (0.06 ms/raycast)  |  71.96 ms (0.07 ms/raycast)  |  120.24 ms (0.12 ms/raycast)  |
+|  Semi-Accurate  |  71.90 ms (0.07 ms/raycast)  |  97.18 ms (0.10 ms/raycast)  |  177.97 ms (0.18 ms/raycast)  |
+|  Accurate  |  61.64 ms (0.06 ms/raycast)  |  225.14 ms (0.23 ms/raycast)  |  253.52 ms (0.25 ms/raycast)  |
+|  Precise  |  80.07 ms (0.08 ms/raycast)  |  395.43 ms (0.40 ms/raycast)  |  437.01 ms (0.44 ms/raycast)  |
+
+## How can I get this in my project?
+You can use [this paste bin](https://pastebin.com/ifnGu6rZ) or you can download the file from [this repository]().
+
+## Warning! This code uses NMS.
+This means that it is possible for this code not to work. I am fairly confident that this code should work from 1.8.8-1.19. If you see any kind of NoSuchMethodException in the console, or the ray-casting utility doesn't seem to produce results, this is the likely reason. I had to use NMS to get an entity's bounding boxes while ray-casting entities. Anyways this code is still version-independent because of Java Reflection, so at least there's that. TL;DR this has NMS and I haven't checked every single version, so it's possible that some versions don't fully work. Later, I will go and test all major versions from 1.8.8 to 1.19. If you have any issues, please report them to the [issues page]() and make sure to specify the server's version.
