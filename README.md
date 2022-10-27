@@ -42,7 +42,8 @@ The check location will move 0.1 blocks ahead for every check. Guareenteed to ge
 ### Precise Entity Precision (Recommended)
 The check location will move 0.01 blocks ahead for every check. Guarenteed to get the correct entity no matter the angle or hit box size. Anti-cheat grade.
 
-## Code Examples
+# Code Examples
+## Normal ray-casting
 ### Discrepency between what player breaks and what player is looking at.
 ```java
 public void onBreak(BlockBreakEvent event) {
@@ -83,6 +84,34 @@ if (result.getType() == RayCastUtility.ResultType.BLOCK) {
     tnt.setFuseTicks(80);
 }
 ```
+
+## Step by step examples
+### Spawning TnT every step (Doesn't do anything on ray-cast finish)
+```java
+RayCastUtility.executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
+    TNTPrimed tnt = (TNTPrimed) stepLocation.getWorld().spawnEntity(stepLocation, EntityType.PRIMED_TNT);
+    tnt.setFuseTicks(60);
+}, null);
+```
+
+### Spawning TnT every step (Sets a block the raytrace hits to obsidian)
+```java
+RayCastUtility.executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
+    TNTPrimed tnt = (TNTPrimed) stepLocation.getWorld().spawnEntity(stepLocation, EntityType.PRIMED_TNT);
+    tnt.setFuseTicks(60);
+}, raycastFinishResult -> {
+    if (result.getType() == RayCastUtility.ResultType.BLOCK) {
+        Block block = (Block) result.get();
+        block.setType(Material.OBSIDIAN);
+    }
+});
+```
+
+### Laser Eyes
+```java
+
+```
+
 I hope you got the jist of it. There's a ton of stuff you can do with ray-casting. From party tricks to cheat detection!
 
 ## Specific Performance Information
