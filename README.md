@@ -109,7 +109,21 @@ RayCastUtility.executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
 
 ### Laser Eyes
 ```java
-
+RayCastUtility.executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
+    stepLocation.getWorld().spawnParticle(Particle.CRIT, stepLocation.getX(), stepLocation.getY(), stepLocation.getZ(), 1);
+}, raycastFinishResult -> {
+    if (raycastFinishResult.getType() == RayCastUtility.ResultType.BLOCK) {
+        Location blockLoc = ((Block) raycastFinishResult.get()).getLocation();
+        blockLoc.getWorld().createExplosion(blockLoc.getX(), blockLoc.getY(), blockLoc.getZ(), 2.5F, false, true);
+    } else if (raycastFinishResult.getType() == RayCastUtility.ResultType.ENTITY) {
+        Entity e = (Entity) raycastFinishResult.get();
+        if (e instanceof LivingEntity) {
+            ((LivingEntity)e).damage(10D)
+        } else {
+            e.remove();
+        }
+    }
+});
 ```
 
 I hope you got the jist of it. There's a ton of stuff you can do with ray-casting. From party tricks to cheat detection!
