@@ -8,8 +8,8 @@ This is a very, very niche resource because I doubt much of anyone needs to use 
 [Levels of Precision](#levels-of-precision)
 
 [Code Example](#code-examples)
-1. [General Examples](#normal-ray-casting)
-2. [Step by step ray-cast usage](#step-by-step-examples)
+- [General Examples](#normal-ray-casting)
+- [Step by step ray-cast usage](#step-by-step-examples)
 
 [Specific Performance Information](#specific-performance-information)
 
