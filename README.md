@@ -16,7 +16,7 @@ This is a very, very niche resource because I doubt much of anyone needs to use 
 [NMS Disclaimer](#nms-disclaimer)
 
 ## What can this thing do?
-You can use this utility to ray-cast blocks and entities based on where the player is looking. Want to find out what block the player is looking at (ignoring entities)? Use rayCastBlocks. Want to find what entity the player is looking at? Use rayCastEntities. Want to find out whether the player is looking at a block or entity? Use rayCast. You can specify a maximum distance and a specific precision. I have a bunch of testing information in the class javadoc on specific precisions and it's performance impact. This doesn't necessarily apply to players though! You can also raytrace from the eyes of any LivingEntity!
+You can use this utility to ray-cast blocks and entities based on where the player is looking. Want to find out what block the player is looking at (ignoring entities)? Use rayCastBlocks. Want to find what entity the player is looking at? Use rayCastEntities. Want to find out whether the player is looking at a block or entity? Use rayCast. You can specify a maximum distance and a specific precision. Want to run code for every step along a ray-cast? Use executeStepByStep. I have a bunch of testing information in the class javadoc on specific precisions and it's performance impact. This doesn't necessarily apply to players though! You can also raytrace from the eyes of any LivingEntity!
 
 ## Levels of Precision
 ### Inaccurate Block Precision
