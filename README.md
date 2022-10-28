@@ -74,12 +74,12 @@ result.getEntity().remove();
 ### Set off TnT at whatever the player is looking at
 ```java
 RayCastResult result = RayCastUtility.rayCast(event.getPlayer(), 10, true, RayCastUtility.Precision.ACCURATE_BLOCK);
-if (result.getType() == RayCastUtility.ResultType.BLOCK) {
+if (result.getType() == ResultType.BLOCK) {
     Block block = (Block) result.get();
     Location loc = block.getLocation();
     TNTPrimed tnt = (TNTPrimed) entity.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
     tnt.setFuseTicks(80);
-} else if (result.getType() == RayCastUtility.ResultType.ENTITY) {
+} else if (result.getType() == ResultType.ENTITY) {
     Entity entity = (Entity) result.get();
     Location loc = entity.getLocation();
     TNTPrimed tnt = (TNTPrimed) entity.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
@@ -102,7 +102,7 @@ executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
     TNTPrimed tnt = (TNTPrimed) stepLocation.getWorld().spawnEntity(stepLocation, EntityType.PRIMED_TNT);
     tnt.setFuseTicks(60);
 }, raycastFinishResult -> {
-    if (result.getType() == RayCastUtility.ResultType.BLOCK) {
+    if (result.getType() == ResultType.BLOCK) {
         Block block = (Block) result.get();
         block.setType(Material.OBSIDIAN);
     }
@@ -114,10 +114,10 @@ executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
 executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
     stepLocation.getWorld().spawnParticle(Particle.CRIT, stepLocation.getX(), stepLocation.getY(), stepLocation.getZ(), 1);
 }, raycastFinishResult -> {
-    if (raycastFinishResult.getType() == RayCastUtility.ResultType.BLOCK) {
+    if (raycastFinishResult.getType() == ResultType.BLOCK) {
         Location blockLoc = ((Block) raycastFinishResult.get()).getLocation();
         blockLoc.getWorld().createExplosion(blockLoc.getX(), blockLoc.getY(), blockLoc.getZ(), 2.5F, false, true);
-    } else if (raycastFinishResult.getType() == RayCastUtility.ResultType.ENTITY) {
+    } else if (raycastFinishResult.getType() == ResultType.ENTITY) {
         Entity e = (Entity) raycastFinishResult.get();
         if (e instanceof LivingEntity) {
             ((LivingEntity)e).damage(10D)
