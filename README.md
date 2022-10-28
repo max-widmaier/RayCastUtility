@@ -50,7 +50,7 @@ The check location will move 0.01 blocks ahead for every check. Guarenteed to ge
 ```java
 public void onBreak(BlockBreakEvent event) {
     Block block = event.getBlock();
-    RayCastUtility.BlockRayCastResult result = RayCastUtility.rayCastBlocks(event.getPlayer(), 6, true, RayCastUtility.Precision.PRECISE_BLOCK);
+    BlockRayCastResult result = RayCastUtility.rayCastBlocks(event.getPlayer(), 6, true, RayCastUtility.Precision.PRECISE_BLOCK);
     if (!result.getBlock().equals(block)) {
        event.setCancelled(true);
        // That's not the block you're looking at!
@@ -60,20 +60,20 @@ public void onBreak(BlockBreakEvent event) {
 
 ### Set the block player is looking at to a diamond block
 ```java
-RayCastUtility.BlockRayCastResult result = RayCastUtility.rayCastBlocks(event.getPlayer(), 10, true, RayCastUtility.Precision.ACCURATE_BLOCK);
+BlockRayCastResult result = RayCastUtility.rayCastBlocks(event.getPlayer(), 10, true, RayCastUtility.Precision.ACCURATE_BLOCK);
 result.getBlock().setType(Material.DIAMOND_BLOCK);
 ```
 
 ### Kill the entity the player is looking
 ```java
-RayCastUtility.EntityRayCastResult result = RayCastUtility.rayCastEntities(event.getPlayer(), 10, true, RayCastUtility.Precision.ACCURATE_BLOCK);
+EntityRayCastResult result = RayCastUtility.rayCastEntities(event.getPlayer(), 10, true, RayCastUtility.Precision.ACCURATE_BLOCK);
 result.getEntity().remove();
 //Shoot off some fireworks and call it laser eyes or something
 ```
 
 ### Set off TnT at whatever the player is looking at
 ```java
-RayCastUtility.RayCastResult result = RayCastUtility.rayCast(event.getPlayer(), 10, true, RayCastUtility.Precision.ACCURATE_BLOCK);
+RayCastResult result = RayCastUtility.rayCast(event.getPlayer(), 10, true, RayCastUtility.Precision.ACCURATE_BLOCK);
 if (result.getType() == RayCastUtility.ResultType.BLOCK) {
     Block block = (Block) result.get();
     Location loc = block.getLocation();
@@ -90,7 +90,7 @@ if (result.getType() == RayCastUtility.ResultType.BLOCK) {
 ## Step by step examples
 ### Spawning TnT every step (Doesn't do anything on ray-cast finish)
 ```java
-RayCastUtility.executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
+executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
     TNTPrimed tnt = (TNTPrimed) stepLocation.getWorld().spawnEntity(stepLocation, EntityType.PRIMED_TNT);
     tnt.setFuseTicks(60);
 }, null);
@@ -98,7 +98,7 @@ RayCastUtility.executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
 
 ### Spawning TnT every step (Sets a block the raytrace hits to obsidian)
 ```java
-RayCastUtility.executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
+executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
     TNTPrimed tnt = (TNTPrimed) stepLocation.getWorld().spawnEntity(stepLocation, EntityType.PRIMED_TNT);
     tnt.setFuseTicks(60);
 }, raycastFinishResult -> {
@@ -111,7 +111,7 @@ RayCastUtility.executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
 
 ### Laser Eyes
 ```java
-RayCastUtility.executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
+executeStepByStep(player, 20, true, 0.5D, true, stepLocation -> {
     stepLocation.getWorld().spawnParticle(Particle.CRIT, stepLocation.getX(), stepLocation.getY(), stepLocation.getZ(), 1);
 }, raycastFinishResult -> {
     if (raycastFinishResult.getType() == RayCastUtility.ResultType.BLOCK) {
