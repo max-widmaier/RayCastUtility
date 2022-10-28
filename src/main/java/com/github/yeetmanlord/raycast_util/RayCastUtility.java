@@ -284,7 +284,7 @@ public class RayCastUtility {
                 distanceTraveled += stepSize;
             }
         } else {
-            NMSAxisAlignedBBReflection bb = new NMSAxisAlignedBBReflection(check, getRayTraceLocation(starting, direction, maxDistance + 0.5D));
+            BoundingBox bb = new BoundingBox(check, getRayTraceLocation(starting, direction, maxDistance + 0.5D));
             List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).filter(e -> bb.isWithinBoundingBox(e.getLocation())).collect(Collectors.toList());
             while (distanceTraveled < maxDistance) {
                 last = check.clone();
@@ -301,8 +301,14 @@ public class RayCastUtility {
                     if (e.equals(entity)) {
                         continue;
                     }
-                    if (new NMSEntityReflection(e).getBoundingBox().isWithinBoundingBox(check)) {
-                        results.add(e);
+                    try {
+                        Object entityBoundingBox = e.getClass().getMethod("getBoundingBox").invoke(e);
+                        BoundingBox entBB = new BoundingBox(entityBoundingBox);
+                        if (entBB.isWithinBoundingBox(check)) {
+                            results.add(e);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 }
                 if (results.size() > 0) {
