@@ -252,7 +252,7 @@ public class RayCastUtility {
         }
         return new EntityRayCastResult(ResultType.ENTITY, hitResult);
     }
-    
+
     /**
      * Ray-casts from entities eye location and executes specified code at each step.
      *
@@ -324,6 +324,92 @@ public class RayCastUtility {
                     break;
                 }
                 distanceTraveled += stepSize;
+            }
+        }
+    }
+
+    /**
+     * Ray-casts from entities eye location and executes specified code at each step. The stepSize and precision are different. stepSize determines when code will run while
+     * precision determines how often a result is checked for (your ray-cast hit something)
+     *
+     * @param entity          Entity to ray-cast from
+     * @param maxDistance     Maximum distance to ray-cast
+     * @param ignoreLiquids   Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
+     * @param stepSize        How many blocks that have to pass before the next onStep is called. If you specified 0.5D, it will run the onStep every half block.
+     * @param ignoreEntities  Whether to stop the ray-casting once it hits an entity
+     * @param precision       How many blocks (or fractions of) to advance before every next check
+     * @param onStep          Code to execute at each step
+     * @param onRayCastFinish Code to execute when ray-casting is finished
+     */
+    public static void executeStepByStepWithPrecision(LivingEntity entity, double maxDistance, boolean ignoreLiquids, double stepSize, boolean ignoreEntities, Precision precision, Consumer<Location> onStep, @Nullable Consumer<RayCastResult> onRayCastFinish) {
+        Location starting = entity.getEyeLocation();
+        Vector direction = starting.getDirection();
+        Location check = starting.clone();
+        Location last;
+        double distanceTraveled = 0;
+        double distSinceLastStep = 0D;
+        if (ignoreEntities) {
+            while (distanceTraveled < maxDistance) {
+                last = check.clone();
+                check = getRayTraceLocation(check, direction, precision.advance);
+                if (distSinceLastStep >= stepSize) {
+                    onStep.accept(check);
+                    distSinceLastStep = 0D;
+                }
+                if (check.getBlock().getType() != Material.AIR && !(check.getBlock().isLiquid() && ignoreLiquids)) {
+                    if (onRayCastFinish != null) {
+                        onRayCastFinish.accept(new BlockRayCastResult(ResultType.BLOCK, check.getBlock(), check.getBlock().getFace(last.getBlock())));
+                    }
+                    break;
+                }
+                distanceTraveled += precision.advance;
+                distSinceLastStep += precision.advance;
+            }
+        } else {
+            BoundingBox bb = new BoundingBox(check, getRayTraceLocation(starting, direction, maxDistance + 0.5D));
+            List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).filter(e -> bb.isWithinBoundingBox(e.getLocation())).collect(Collectors.toList());
+            while (distanceTraveled < maxDistance) {
+                last = check.clone();
+                check = getRayTraceLocation(check, direction, precision.advance);
+                if (distSinceLastStep >= stepSize) {
+                    onStep.accept(check);
+                    distSinceLastStep = 0D;
+                }
+                if (check.getBlock().getType() != Material.AIR && !(check.getBlock().isLiquid() && ignoreLiquids)) {
+                    if (onRayCastFinish != null) {
+                        onRayCastFinish.accept(new BlockRayCastResult(ResultType.BLOCK, check.getBlock(), check.getBlock().getFace(last.getBlock())));
+                    }
+                    break;
+                }
+                List<Entity> results = new ArrayList<>();
+                for (Entity e : entityList) {
+                    if (e.equals(entity)) {
+                        continue;
+                    }
+                    try {
+                        Object entityBoundingBox = e.getClass().getMethod("getBoundingBox").invoke(e);
+                        BoundingBox entBB = new BoundingBox(entityBoundingBox);
+                        if (entBB.isWithinBoundingBox(check)) {
+                            results.add(e);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                if (results.size() > 0) {
+                    if (onRayCastFinish != null) {
+                        Entity closest = results.get(0);
+                        for (int i = 1; i < results.size(); i++) {
+                            if (results.get(i).getLocation().distance(check) < closest.getLocation().distance(check)) {
+                                closest = results.get(i);
+                            }
+                        }
+                        onRayCastFinish.accept(new EntityRayCastResult(ResultType.ENTITY, closest));
+                    }
+                    break;
+                }
+                distanceTraveled += precision.advance;
+                distSinceLastStep += precision.advance;
             }
         }
     }
