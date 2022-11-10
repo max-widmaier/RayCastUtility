@@ -162,7 +162,7 @@ public class RayCastUtility {
                 }
                 try {
                     Object nmsEntity = e.getClass().getMethod("getHandle").invoke(e);
-                    Object entityBoundingBox = nmsEntity.getClass().getMethod("getBoundingBox").invoke(e);
+                    Object entityBoundingBox = nmsEntity.getClass().getMethod("getBoundingBox").invoke(nmsEntity);
                     BoundingBox entBB = new BoundingBox(entityBoundingBox);
                     if (entBB.isWithinBoundingBox(check)) {
                         results.add(e);
@@ -223,7 +223,7 @@ public class RayCastUtility {
                 }
                 try {
                     Object nmsEntity = e.getClass().getMethod("getHandle").invoke(e);
-                    Object entityBoundingBox = nmsEntity.getClass().getMethod("getBoundingBox").invoke(e);
+                    Object entityBoundingBox = nmsEntity.getClass().getMethod("getBoundingBox").invoke(nmsEntity);
                     BoundingBox entBB = new BoundingBox(entityBoundingBox);
                     if (entBB.isWithinBoundingBox(check)) {
                         results.add(e);
@@ -305,7 +305,7 @@ public class RayCastUtility {
                     }
                     try {
                         Object nmsEntity = e.getClass().getMethod("getHandle").invoke(e);
-                        Object entityBoundingBox = nmsEntity.getClass().getMethod("getBoundingBox").invoke(e);
+                        Object entityBoundingBox = nmsEntity.getClass().getMethod("getBoundingBox").invoke(nmsEntity);
                         BoundingBox entBB = new BoundingBox(entityBoundingBox);
                         if (entBB.isWithinBoundingBox(check)) {
                             results.add(e);
@@ -391,7 +391,7 @@ public class RayCastUtility {
                     }
                     try {
                         Object nmsEntity = e.getClass().getMethod("getHandle").invoke(e);
-                        Object entityBoundingBox = nmsEntity.getClass().getMethod("getBoundingBox").invoke(e);
+                        Object entityBoundingBox = nmsEntity.getClass().getMethod("getBoundingBox").invoke(nmsEntity);
                         BoundingBox entBB = new BoundingBox(entityBoundingBox);
                         if (entBB.isWithinBoundingBox(check)) {
                             results.add(e);
