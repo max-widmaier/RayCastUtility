@@ -1,3 +1,5 @@
 .idea
-bin/
-out/
+bin
+out
+target
+doc

@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
@@ -26,72 +27,72 @@ import java.util.stream.Collectors;
  * <b>TEST RESULTS:</b>
  * <br>
  * <b>NOTE:</b> Entity results will very, based on how many entities are loaded.
- * <ol>
+ * <ul>
  *     Block Ray-Cast: 80.07 ms, Precision: {@link Precision#PRECISE_BLOCK}
- *     <ol>
+ *     <ul>
  *         Successfully completed 1000 ray-casts <br>
  *         TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  *     Entity Ray-Cast: 395.43 ms, Precision: {@link Precision#PRECISE_ENTITY}
- *     <ol>
+ *     <ul>
  *         Successfully completed 1000 ray-casts <br>
  *          TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  *     Full Ray-Cast (Block and entity): 437.01 ms, Precision: {@link Precision#PRECISE_ENTITY}
- *     <ol>
+ *     <ul>
  *            Successfully completed 1000 ray-casts <br>
  *            TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  * <p>
  *     Block Ray-Cast: 61.64 ms, Precision: {@link Precision#ACCURATE_BLOCK}
- *     <ol>
+ *     <ul>
  *         Successfully completed 1000 ray-casts <br>
  *         TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  *     Entity Ray-Cast: 225.14 ms, Precision: {@link Precision#ACCURATE_ENTITY}
- *     <ol>
+ *     <ul>
  *         Successfully completed 1000 ray-casts <br>
  *          TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  *     Full Ray-Cast (Block and entity): 253.52 ms, Precision: {@link Precision#ACCURATE_ENTITY}
- *     <ol>
+ *     <ul>
  *            Successfully completed 1000 ray-casts <br>
  *            TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  * <p>
  *     Block Ray-Cast: 71.90 ms (Lol, wow), Precision: {@link Precision#SEMI_ACCURATE_BLOCK}
- *     <ol>
+ *     <ul>
  *         Successfully completed 1000 ray-casts <br>
  *         TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  *     Entity Ray-Cast: 97.18 ms (Wow that's a lot of improvement), Precision: {@link Precision#SEMI_ACCURATE_ENTITY}
- *     <ol>
+ *     <ul>
  *         Successfully completed 1000 ray-casts <br>
  *          TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  *     Full Ray-Cast (Block and entity): 177.97 ms, Precision: {@link Precision#SEMI_ACCURATE_ENTITY}
- *     <ol>
+ *     <ul>
  *            Successfully completed 1000 ray-casts <br>
  *            TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  * <p>
  *     Block Ray-Cast: 61.22 ms, Precision: {@link Precision#IMPRECISE_BLOCK}
- *     <ol>
+ *     <ul>
  *         Successfully completed 1000 ray-casts <br>
  *         TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  *     Entity Ray-Cast: 71.96 ms, Precision: {@link Precision#IMPRECISE_ENTITY}
- *     <ol>
+ *     <ul>
  *         Successfully completed 1000 ray-casts <br>
  *          TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  *     Full Ray-Cast (Block and entity): 120.24 ms, Precision: {@link Precision#IMPRECISE_ENTITY}
- *     <ol>
+ *     <ul>
  *            Successfully completed 1000 ray-casts <br>
  *            TPS: No noticeable TPS change.
- *     </ol> <br>
+ *     </ul> <br>
  *
- * </ol>
+ * </ul>
  * <b>VERDICT:</b> You should probably use {@link Precision#ACCURATE_BLOCK} and I think you should probably use {@link Precision#PRECISE_ENTITY} or {@link Precision#ACCURATE_ENTITY}. Despite those
  * being resource hogs they are the only accurate way. (Sadly)
  */
@@ -108,6 +109,7 @@ public class RayCastUtility {
      */
     public static BlockRayCastResult rayCastBlocks(LivingEntity entity, double maxDistance, boolean ignoreLiquids, Precision precision) {
 
+        ((CraftLivingEntity) entity).getHandle().stepHeight = 0.6F;
         Location starting = entity.getEyeLocation();
         Vector direction = starting.getDirection();
         Location check = starting.clone();
