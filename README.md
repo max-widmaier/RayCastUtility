@@ -173,7 +173,7 @@ Maven
 <dependency>
     <groupId>com.github.YeetmanLord</groupId>
     <artifactId>RayCastUtility</artifactId>
-    <version>1.1.0</version>
+    <version><Release Tag></version>
 </dependency>
 ```
 
