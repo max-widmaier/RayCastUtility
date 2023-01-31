@@ -66,7 +66,7 @@ result.getBlock().setType(Material.DIAMOND_BLOCK);
 
 ### Kill the entity the player is looking
 ```java
-EntityRayCastResult result = RayCastUtility.rayCastEntities(event.getPlayer(), 10, true, RayCastUtility.Precision.ACCURATE_BLOCK);
+EntityRayCastResult result = RayCastUtility.rayCastEntities(event.getPlayer(), 10, true, RayCastUtility.Precision.PRECISE_ENTITY);
 result.getEntity().remove();
 //Shoot off some fireworks and call it laser eyes or something
 ```
