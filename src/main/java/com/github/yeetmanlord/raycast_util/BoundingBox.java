@@ -1,8 +1,10 @@
 package com.github.yeetmanlord.raycast_util;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
 public class BoundingBox {
     private double x1;
@@ -23,6 +25,28 @@ public class BoundingBox {
     }
 
     public BoundingBox(Object nmsObject) throws NoSuchFieldException {
+        try {
+            this.x1 = (double) getFieldFromNmsObject("a", nmsObject);
+            this.y1 = (double) getFieldFromNmsObject("b", nmsObject);
+            this.z1 = (double) getFieldFromNmsObject("c", nmsObject);
+
+            this.x2 = (double) getFieldFromNmsObject("d", nmsObject);
+            this.y2 = (double) getFieldFromNmsObject("e", nmsObject);
+            this.z2 = (double) getFieldFromNmsObject("f", nmsObject);
+        } catch (NoSuchFieldException e) {
+            this.x1 = (double) getFieldFromNmsObject("minX", nmsObject);
+            this.y1 = (double) getFieldFromNmsObject("minY", nmsObject);
+            this.z1 = (double) getFieldFromNmsObject("minZ", nmsObject);
+
+            this.x2 = (double) getFieldFromNmsObject("maxX", nmsObject);
+            this.y2 = (double) getFieldFromNmsObject("maxY", nmsObject);
+            this.z2 = (double) getFieldFromNmsObject("maxZ", nmsObject);
+        }
+    }
+
+    public BoundingBox(Entity entity) throws NoSuchFieldException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Object nmsEntity = entity.getClass().getMethod("getHandle").invoke(entity);
+        Object nmsObject = nmsEntity.getClass().getMethod("getBoundingBox").invoke(nmsEntity);
         try {
             this.x1 = (double) getFieldFromNmsObject("a", nmsObject);
             this.y1 = (double) getFieldFromNmsObject("b", nmsObject);
@@ -64,6 +88,19 @@ public class BoundingBox {
 
     public boolean isWithinBoundingBox(Location location) {
         return this.isWithinBoundingBox(location.getX(), location.getY(), location.getZ());
+    }
+
+    public boolean isWithinBoundingBox(BoundingBox boundingBox) {
+        boolean result;
+        result = this.isWithinBoundingBox(boundingBox.x1, boundingBox.y1, boundingBox.z1);
+        result = result || this.isWithinBoundingBox(boundingBox.x1, boundingBox.y1, boundingBox.z2);
+        result = result || this.isWithinBoundingBox(boundingBox.x1, boundingBox.y2, boundingBox.z1);
+        result = result || this.isWithinBoundingBox(boundingBox.x1, boundingBox.y2, boundingBox.z2);
+        result = result || this.isWithinBoundingBox(boundingBox.x2, boundingBox.y1, boundingBox.z1);
+        result = result || this.isWithinBoundingBox(boundingBox.x2, boundingBox.y1, boundingBox.z2);
+        result = result || this.isWithinBoundingBox(boundingBox.x2, boundingBox.y2, boundingBox.z1);
+        result = result || this.isWithinBoundingBox(boundingBox.x2, boundingBox.y2, boundingBox.z2);
+        return result;
     }
 
     public static Object getFieldFromNmsObject(String fieldName, Object o) throws NoSuchFieldException {
