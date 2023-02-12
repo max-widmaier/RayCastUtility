@@ -147,14 +147,7 @@ public class RayCastUtility {
         Location starting = entity.getEyeLocation();
         Vector direction = starting.getDirection();
         Location check = starting.clone();
-        BoundingBox bb = new BoundingBox(entity.getLocation(), getRayTraceLocation(starting, direction, maxDistance + 0.5D));
-        List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).filter(e -> {
-            try {
-                return bb.isWithinBoundingBox(e.getLocation()) || bb.isWithinBoundingBox(new BoundingBox(e));
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }).collect(Collectors.toList());
+        List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).collect(Collectors.toList());
         Entity hitResult = null;
         double distanceTraveled = 0;
         while (distanceTraveled < maxDistance) {
@@ -211,14 +204,7 @@ public class RayCastUtility {
         Vector direction = starting.getDirection();
         Location check = starting.clone();
         Location last = starting.clone();
-        BoundingBox bb = new BoundingBox(starting, getRayTraceLocation(starting, direction, maxDistance + 0.5D));
-        List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).filter(e -> {
-            try {
-                return bb.isWithinBoundingBox(e.getLocation()) || bb.isWithinBoundingBox(new BoundingBox(e));
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }).collect(Collectors.toList());
+        List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).collect(Collectors.toList());
         Entity hitResult = null;
         double distanceTraveled = 0;
         Block blockResult = null;
@@ -297,14 +283,7 @@ public class RayCastUtility {
                 distanceTraveled += stepSize;
             }
         } else {
-            BoundingBox bb = new BoundingBox(entity.getLocation(), getRayTraceLocation(starting, direction, maxDistance + 0.5D));
-            List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).filter(e -> {
-                try {
-                    return bb.isWithinBoundingBox(e.getLocation()) || bb.isWithinBoundingBox(new BoundingBox(e));
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }).collect(Collectors.toList());
+            List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).collect(Collectors.toList());
             while (distanceTraveled < maxDistance) {
                 last = check.clone();
                 check = getRayTraceLocation(check, direction, stepSize);
@@ -383,14 +362,7 @@ public class RayCastUtility {
                 distSinceLastStep += precision.advance;
             }
         } else {
-            BoundingBox bb = new BoundingBox(entity.getLocation(), getRayTraceLocation(starting, direction, maxDistance + 0.5D));
-            List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).filter(e -> {
-                try {
-                    return bb.isWithinBoundingBox(e.getLocation()) || bb.isWithinBoundingBox(new BoundingBox(e));
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            }).collect(Collectors.toList());
+            List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).collect(Collectors.toList());
             while (distanceTraveled < maxDistance) {
                 last = check.clone();
                 check = getRayTraceLocation(check, direction, precision.advance);
