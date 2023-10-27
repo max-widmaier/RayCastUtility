@@ -101,15 +101,13 @@ public class RayCastUtility {
     /**
      * Ray-casts only blocks. Doesn't affect performance very much. Using a 1.16.5 server and calling this 1000 times, there was minimal tps issue. (Using the highest preciseness)
      *
-     * @param entity        Entity to ray-cast from
+     * @param starting      Location to ray-cast from
      * @param maxDistance   Maximum distance to ray-cast
      * @param ignoreLiquids Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
      * @param precision     How many blocks (or fractions of) to advance before every next check
      * @return A ray-casted block result or an empty block result
      */
-    public static BlockRayCastResult rayCastBlocks(LivingEntity entity, double maxDistance, boolean ignoreLiquids, Precision precision) {
-
-        Location starting = entity.getEyeLocation();
+    public static BlockRayCastResult rayCastBlocks(Location starting, double maxDistance, boolean ignoreLiquids, Precision precision) {
         Vector direction = starting.getDirection();
         Location check = starting.clone();
         Location last = starting.clone();
@@ -134,17 +132,21 @@ public class RayCastUtility {
         return new BlockRayCastResult(ResultType.BLOCK, block, face);
     }
 
+    @Deprecated
+    public static BlockRayCastResult rayCastBlocks(Entity entity, double maxDistance, boolean ignoreLiquids, Precision precision) {
+        return rayCastBlocks(enity.getEyeLocation(), maxDistance, ignoreLiquids, precision);
+    }
+
     /**
      * Ray-casts only entities. Affect performance quite a bit. Using a 1.16.5 server and calling this 1000 time, it took quite a bit of time. (Using the highest preciseness)
      *
-     * @param entity        Entity to ray-cast from
+     * @param starting      Location to ray-cast from
      * @param maxDistance   Maximum distance to ray-cast
      * @param ignoreLiquids Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
      * @param precision     How many blocks (or fractions of) to advance before every next check
      * @return A ray-casted entity result or an empty entity result
      */
-    public static EntityRayCastResult rayCastEntities(LivingEntity entity, double maxDistance, boolean ignoreLiquids, Precision precision) {
-        Location starting = entity.getEyeLocation();
+    public static EntityRayCastResult rayCastEntities(Location starting, double maxDistance, boolean ignoreLiquids, Precision precision) {
         Vector direction = starting.getDirection();
         Location check = starting.clone();
         List<Entity> entityList = new ArrayList<>(entity.getNearbyEntities(maxDistance + 0.5, maxDistance + 0.5, maxDistance + 0.5)).stream().filter(e -> e != entity).collect(Collectors.toList());
@@ -190,17 +192,21 @@ public class RayCastUtility {
         return new EntityRayCastResult(ResultType.ENTITY, hitResult);
     }
 
+    @Deprecated
+    public static EntityRayCastResult rayCastEntities(Entity entity, double maxDistance, boolean ignoreLiquids, Precision precision) {
+        return rayCastEntities(entity.getEyeLocation(), maxDistance, ignoreLiquids, precision);
+    }    
+
     /**
      * Ray-casts entities and blocks. Affect performance quite a bit. Using a 1.16.5 server and calling this 1000 times, it took quite a bit of time. (Using the highest preciseness)
      *
-     * @param entity        Entity to ray-cast from
+     * @param starting      Location to ray-cast from
      * @param maxDistance   Maximum distance to ray-cast
      * @param ignoreLiquids Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
      * @param precision     How many blocks (or fractions of) to advance before every next check
      * @return A ray-cast result or an empty result
      */
-    public static RayCastResult rayCast(LivingEntity entity, double maxDistance, boolean ignoreLiquids, Precision precision) {
-        Location starting = entity.getEyeLocation();
+    public static RayCastResult rayCast(Location starting, double maxDistance, boolean ignoreLiquids, Precision precision) {
         Vector direction = starting.getDirection();
         Location check = starting.clone();
         Location last = starting.clone();
@@ -252,10 +258,15 @@ public class RayCastUtility {
         return new EntityRayCastResult(ResultType.ENTITY, hitResult);
     }
 
+    @Deprecated
+    public static RayCastResult rayCast(Entity entity, double maxDistance, boolean ignoreLiquids, Precision precision) {
+        return rayCast(entity.getEyeLocation(), maxDistance, ignoreLiquids, precision);
+    }
+
     /**
      * Ray-casts from entities eye location and executes specified code at each step.
      *
-     * @param entity          Entity to ray-cast from
+     * @param starting      Location to ray-cast from
      * @param maxDistance     Maximum distance to ray-cast
      * @param ignoreLiquids   Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
      * @param stepSize        How many blocks to advance forward before next check. If you specified 0.5D, it will check every half block.
@@ -263,8 +274,7 @@ public class RayCastUtility {
      * @param onStep          Code to execute at each step
      * @param onRayCastFinish Code to execute when ray-casting is finished
      */
-    public static void executeStepByStep(LivingEntity entity, double maxDistance, boolean ignoreLiquids, double stepSize, boolean ignoreEntities, Consumer<Location> onStep, @Nullable Consumer<RayCastResult> onRayCastFinish) {
-        Location starting = entity.getEyeLocation();
+    public static void executeStepByStep(Location starting, double maxDistance, boolean ignoreLiquids, double stepSize, boolean ignoreEntities, Consumer<Location> onStep, @Nullable Consumer<RayCastResult> onRayCastFinish) {
         Vector direction = starting.getDirection();
         Location check = starting.clone();
         Location last;
@@ -324,11 +334,16 @@ public class RayCastUtility {
         }
     }
 
+    @Deprecated
+    public static void executeStepByStep(Entity entity, double maxDistance, boolean ignoreLiquids, double stepSize, boolean ignoreEntities, Consumer<Location> onStep, @Nullable Consumer<RayCastResult> onRayCastFinish) {
+        return executeStepByStep(entity.getEyeLocation(), maxDistance, ignoreLiquids, stepSize, ignoreEntities, onStep, onRayCastFinish);
+    }
+
     /**
      * Ray-casts from entities eye location and executes specified code at each step. The stepSize and precision are different. stepSize determines when code will run while
      * precision determines how often a result is checked for (your ray-cast hit something)
      *
-     * @param entity          Entity to ray-cast from
+     * @param starting      Location to ray-cast from
      * @param maxDistance     Maximum distance to ray-cast
      * @param ignoreLiquids   Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
      * @param stepSize        How many blocks that have to pass before the next onStep is called. If you specified 0.5D, it will run the onStep every half block.
@@ -337,8 +352,7 @@ public class RayCastUtility {
      * @param onStep          Code to execute at each step
      * @param onRayCastFinish Code to execute when ray-casting is finished
      */
-    public static void executeStepByStepWithPrecision(LivingEntity entity, double maxDistance, boolean ignoreLiquids, double stepSize, boolean ignoreEntities, Precision precision, Consumer<Location> onStep, @Nullable Consumer<RayCastResult> onRayCastFinish) {
-        Location starting = entity.getEyeLocation();
+    public static void executeStepByStepWithPrecision(Location starting, double maxDistance, boolean ignoreLiquids, double stepSize, boolean ignoreEntities, Precision precision, Consumer<Location> onStep, @Nullable Consumer<RayCastResult> onRayCastFinish) {
         Vector direction = starting.getDirection();
         Location check = starting.clone();
         Location last;
@@ -405,6 +419,11 @@ public class RayCastUtility {
                 distSinceLastStep += precision.advance;
             }
         }
+    }
+
+    @Deprecated
+    public static void executeStepByStepWithPrecision(Entity entity, double maxDistance, boolean ignoreLiquids, double stepSize, boolean ignoreEntities, Precision precision, Consumer<Location> onStep, @Nullable Consumer<RayCastResult> onRayCastFinish) {
+        return executeStepByStepWithPrecision(entity.getEyeLocation(), maxDistance, ignoreLiqiuds, stepSize, ignoreEntities, precision, onStep, onRayCastFinish);
     }
 
     public static Location getRayTraceLocation(Location starting, Vector direction, double distance) {
