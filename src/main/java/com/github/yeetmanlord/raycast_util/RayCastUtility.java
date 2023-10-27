@@ -101,7 +101,7 @@ public class RayCastUtility {
     /**
      * Ray-casts only blocks. Doesn't affect performance very much. Using a 1.16.5 server and calling this 1000 times, there was minimal tps issue. (Using the highest preciseness)
      *
-     * @param entity        Entity to ray-cast from
+     * @param starting      Location to ray-cast from
      * @param maxDistance   Maximum distance to ray-cast
      * @param ignoreLiquids Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
      * @param precision     How many blocks (or fractions of) to advance before every next check
@@ -135,7 +135,7 @@ public class RayCastUtility {
     /**
      * Ray-casts only entities. Affect performance quite a bit. Using a 1.16.5 server and calling this 1000 time, it took quite a bit of time. (Using the highest preciseness)
      *
-     * @param entity        Entity to ray-cast from
+     * @param starting      Location to ray-cast from
      * @param maxDistance   Maximum distance to ray-cast
      * @param ignoreLiquids Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
      * @param precision     How many blocks (or fractions of) to advance before every next check
@@ -190,7 +190,7 @@ public class RayCastUtility {
     /**
      * Ray-casts entities and blocks. Affect performance quite a bit. Using a 1.16.5 server and calling this 1000 times, it took quite a bit of time. (Using the highest preciseness)
      *
-     * @param entity        Entity to ray-cast from
+     * @param starting      Location to ray-cast from
      * @param maxDistance   Maximum distance to ray-cast
      * @param ignoreLiquids Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
      * @param precision     How many blocks (or fractions of) to advance before every next check
@@ -251,7 +251,7 @@ public class RayCastUtility {
     /**
      * Ray-casts from entities eye location and executes specified code at each step.
      *
-     * @param entity          Entity to ray-cast from
+     * @param starting      Location to ray-cast from
      * @param maxDistance     Maximum distance to ray-cast
      * @param ignoreLiquids   Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
      * @param stepSize        How many blocks to advance forward before next check. If you specified 0.5D, it will check every half block.
@@ -323,7 +323,7 @@ public class RayCastUtility {
      * Ray-casts from entities eye location and executes specified code at each step. The stepSize and precision are different. stepSize determines when code will run while
      * precision determines how often a result is checked for (your ray-cast hit something)
      *
-     * @param entity          Entity to ray-cast from
+     * @param starting      Location to ray-cast from
      * @param maxDistance     Maximum distance to ray-cast
      * @param ignoreLiquids   Whether to factor in liquids. If true, will not stop ray-casting at a liquid.
      * @param stepSize        How many blocks that have to pass before the next onStep is called. If you specified 0.5D, it will run the onStep every half block.
