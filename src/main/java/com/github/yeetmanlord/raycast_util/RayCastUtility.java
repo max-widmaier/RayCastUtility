@@ -132,6 +132,11 @@ public class RayCastUtility {
         return new BlockRayCastResult(ResultType.BLOCK, block, face);
     }
 
+    @Deprecated
+    public static BlockRayCastResult rayCastBlocks(Entity entity, double maxDistance, boolean ignoreLiquids, Precision precision) {
+        return rayCastBlocks(enity.getEyeLocation(), maxDistance, ignoreLiquids, precision);
+    }
+
     /**
      * Ray-casts only entities. Affect performance quite a bit. Using a 1.16.5 server and calling this 1000 time, it took quite a bit of time. (Using the highest preciseness)
      *
@@ -186,6 +191,11 @@ public class RayCastUtility {
         }
         return new EntityRayCastResult(ResultType.ENTITY, hitResult);
     }
+
+    @Deprecated
+    public static EntityRayCastResult rayCastEntities(Entity entity, double maxDistance, boolean ignoreLiquids, Precision precision) {
+        return rayCastEntities(entity.getEyeLocation(), maxDistance, ignoreLiquids, precision);
+    }    
 
     /**
      * Ray-casts entities and blocks. Affect performance quite a bit. Using a 1.16.5 server and calling this 1000 times, it took quite a bit of time. (Using the highest preciseness)
@@ -246,6 +256,11 @@ public class RayCastUtility {
             }
         }
         return new EntityRayCastResult(ResultType.ENTITY, hitResult);
+    }
+
+    @Deprecated
+    public static RayCastResult rayCast(Entity entity, double maxDistance, boolean ignoreLiquids, Precision precision) {
+        return rayCast(entity.getEyeLocation(), maxDistance, ignoreLiquids, precision);
     }
 
     /**
@@ -317,6 +332,11 @@ public class RayCastUtility {
                 distanceTraveled += stepSize;
             }
         }
+    }
+
+    @Deprecated
+    public static void executeStepByStep(Entity entity, double maxDistance, boolean ignoreLiquids, double stepSize, boolean ignoreEntities, Consumer<Location> onStep, @Nullable Consumer<RayCastResult> onRayCastFinish) {
+        return executeStepByStep(entity.getEyeLocation(), maxDistance, ignoreLiquids, stepSize, ignoreEntities, onStep, onRayCastFinish);
     }
 
     /**
@@ -399,6 +419,11 @@ public class RayCastUtility {
                 distSinceLastStep += precision.advance;
             }
         }
+    }
+
+    @Deprecated
+    public static void executeStepByStepWithPrecision(Entity entity, double maxDistance, boolean ignoreLiquids, double stepSize, boolean ignoreEntities, Precision precision, Consumer<Location> onStep, @Nullable Consumer<RayCastResult> onRayCastFinish) {
+        return executeStepByStepWithPrecision(entity.getEyeLocation(), maxDistance, ignoreLiqiuds, stepSize, ignoreEntities, precision, onStep, onRayCastFinish);
     }
 
     public static Location getRayTraceLocation(Location starting, Vector direction, double distance) {
